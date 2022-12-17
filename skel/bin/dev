@@ -1,0 +1,12 @@
+#!/bin/bash
+
+toplevel=$(git rev-parse --show-toplevel 2>/dev/null)
+if [ -n "${toplevel}" ]; then
+  cd "${toplevel}"
+fi
+service=$(basename $(pwd))
+project=$(basename $(dirname $(pwd)))
+host="${service}.${project}.local"
+
+echo "hostname: http://$host:3000"
+docker run -h "${host}" -ti -u $(id -u):$(id -g) -v $(pwd):/var/www thisisdevelopment/php:8.1-fpm $*

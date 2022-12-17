@@ -1,0 +1,6 @@
+*.iso
+*.mbr
+/unpacked-iso/
+/orig-iso/
+.env
+*~
