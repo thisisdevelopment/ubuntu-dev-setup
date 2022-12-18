@@ -16,7 +16,6 @@ UNPACKED_IMAGE_PATH="./unpacked-iso/"
 VOLUME_NAME="${OEM} Ubuntu-${UBUNTU_RELEASE}${UBUNTU_POINT_RELEASE}"
 
 if [ ! -f "${RELEASE_ISO_FILENAME}" ]; then
-    #TODO: download + verify sha256 sums + gpg
     curl --output ${RELEASE_ISO_FILENAME} --progress-bar --location ${DOWNLOAD_URL}
 fi
 
@@ -31,6 +30,8 @@ unpacked="./unpacked-iso"
 ./install.sh post-install-user.sh $unpacked/post-install-user.sh
 ./install.sh setup.sh $unpacked/setup.sh
 ./install.sh encrypt-boot.sh $unpacked/encrypt-boot.sh
+./install.sh change-disk-encryption-password.sh $unpacked/change-disk-encryption-password
+
 cp -a skel $unpacked
 echo "${VOLUME_NAME}" > $unpacked/.disk/info
 

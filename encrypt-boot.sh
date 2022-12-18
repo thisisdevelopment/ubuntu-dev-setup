@@ -5,15 +5,13 @@ echo "--- Encrypting boot partition ---"
 # backup boot partition
 tar -C /target/boot --acls --xattrs --one-file-system -cf /target/tmp/boot.tar .
 
-cat /proc/mounts
-
 # gather partition info
 lvmroot="/dev/$(lsblk -t -s -P | grep -A 2 "vg.*-root" | tail -n 1 | sed 's/NAME="\([^"]*\)".*$/\1/')"
 bootdev=$(cat /proc/mounts | grep "/target/boot " | cut -f1 -d' ')
 efidev=$(cat /proc/mounts | grep "/target/boot/efi " | cut -f1 -d' ')
 uuidboot=$(blkid -o value -s UUID $bootdev)
 
-# encrypt boot
+# umount everything under /boot so we can create a encrypted partition
 umount /target/boot/efi
 umount /target/boot
 
@@ -31,7 +29,7 @@ chmod 0400 /target/etc/luks/boot_os.keyfile
 echo -n "${INITIAL_DISK_PASSWORD}" | cryptsetup -d - -q luksAddKey $bootdev /target/etc/luks/boot_os.keyfile
 echo -n "${INITIAL_DISK_PASSWORD}" | cryptsetup -d - -q luksAddKey $lvmroot /target/etc/luks/boot_os.keyfile
 
-# update config
+# update config which enables you to enter a single password in grub which unlocks both the root + boot volumes
 echo "boot_crypt UUID=$(blkid -o value -s UUID $bootdev) none luks,discard" | tee -a /target/etc/crypttab
 sed -i 's|none |/etc/luks/boot_os.keyfile key-slot=1,|' /target/etc/crypttab
 echo "GRUB_ENABLE_CRYPTODISK=y" > /target/etc/default/grub.d/local.cfg
@@ -40,14 +38,18 @@ echo "UMASK=0077" >> /target/etc/initramfs-tools/initramfs.conf
 
 echo "--- Updating boot loader ---"
 
+# restore boot partition contents
 mount /dev/mapper/boot_crypt /target/boot
+chroot /target tar -C /boot --acls --xattrs -xf /tmp/boot.tar
+rm /target/tmp/boot.tar
+
+# make sure everything is mounted under /target
 mount $efidev /target/boot/efi
 for n in proc sys dev etc/resolv.conf; do
     mount --rbind /$n /target/$n
 done
 
-# restore boot partition contents + update bootloader
-chroot /target tar -C /boot --acls --xattrs -xf /tmp/boot.tar
+# update bootloader
 chroot /target update-initramfs -u -k all
 chroot /target update-grub
 chroot /target grub-install

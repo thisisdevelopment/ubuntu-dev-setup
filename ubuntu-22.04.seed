@@ -150,8 +150,10 @@ ubiquity ubiquity/use_nonfree boolean true
 ubiquity ubiquity/success_command string \
 	cp /cdrom/post-install.sh /target/root/; \
 	cp /cdrom/post-install-user.sh /target/root/; \
-	cp -r /cdrom/skel/. /target/etc/skel/; \
 	chmod 0700 /target/root/post-install*; \
+	cp /cdrom/change-disk-encryption-password /target/usr/local/bin/; \
+	chmod a+x /target/usr/local/bin/change-disk-encryption-password; \
+	cp -r /cdrom/skel/. /target/etc/skel/; \
 	in-target /root/post-install.sh; \
 	/cdrom/encrypt-boot.sh;
 

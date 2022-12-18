@@ -27,10 +27,7 @@ apt-get upgrade -y
 fwupdmgr get-updates -y
 fwupdmgr update -y
 
-#TODO: set chrome settings
-#TODO: desktop settings
-
 # Cleanup
 rm /root/post-install-user.sh
 
-} >/tmp/post-install-user.out 2>/tmp/post-install-user.err 
+} >/tmp/post-install-user.out 2>/tmp/post-install-user.err
