@@ -4,8 +4,6 @@ set -ux
 
 {
 
-( set -o posix ; set )
-
 dev=$(ls /sys/class/ieee80211/*/device/net/ | head -n 1)
 sudo ip link set dev $dev up
 sudo nmcli d wifi connect "$WIRELESS_SSID" password "$WIRELESS_PASSWORD"
@@ -29,12 +27,10 @@ apt-get upgrade -y
 fwupdmgr get-updates -y
 fwupdmgr update -y
 
-snap install slack
-
 #TODO: set chrome settings
 #TODO: desktop settings
 
 # Cleanup
-#rm /root/post-install-user.sh
+rm /root/post-install-user.sh
 
 } >/tmp/post-install-user.out 2>/tmp/post-install-user.err 

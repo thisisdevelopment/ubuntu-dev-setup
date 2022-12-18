@@ -110,8 +110,8 @@ d-i partman-auto-lvm/guided_size string max
 
 # When disk encryption is enabled, skip wiping the partitions beforehand.
 d-i partman-auto-crypto/erase_disks boolean false
-d-i partman-crypto/passphrase string PleaseChangeMe
-d-i partman-crypto/passphrase-again string PleaseChangeMe
+d-i partman-crypto/passphrase string $INITIAL_DISK_PASSWORD
+d-i partman-crypto/passphrase-again string $INITIAL_DISK_PASSWORD
 d-i partman-crypto/weak_passphrase boolean true
 
 # This makes partman automatically partition without confirmation.
@@ -127,7 +127,7 @@ d-i partman-auto/cap-ram boolean false
 # The options below come from the regular Ubuntu 18.04 LTS seed
 
 ### Package selection
-ubiquity ubiquity/minimal_install boolean true
+ubiquity ubiquity/minimal_install boolean false
 
 # Policy for applying updates. May be "none" (no automatic updates),
 # "unattended-upgrades" (install security updates automatically), or
@@ -143,13 +143,17 @@ tasksel	tasksel/first	multiselect ubuntu-desktop
 # well keep them installed.
 ubiquity	ubiquity/keep-installed	string icedtea6-plugin openoffice.org
 
+ubiquity ubiquity/download_updates boolean true
+ubiquity ubiquity/use_nonfree boolean true
+
 # At the very end of installation:
 ubiquity ubiquity/success_command string \
 	cp /cdrom/post-install.sh /target/root/; \
 	cp /cdrom/post-install-user.sh /target/root/; \
 	cp -r /cdrom/skel/. /target/etc/skel/; \
 	chmod 0700 /target/root/post-install*; \
-	in-target /root/post-install.sh;
+	in-target /root/post-install.sh; \
+	/cdrom/encrypt-boot.sh;
 
 oem-config oem-config/late_command string /root/post-install-user.sh
 
