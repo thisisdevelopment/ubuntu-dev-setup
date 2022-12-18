@@ -31,8 +31,8 @@ Setup your `.env` (see `.env.example)
 OEM="TID"
 UBUNTU_RELEASE="22.04"
 UBUNTU_POINT_RELEASE=".1"
-WIRELESS_SSID="<your wireless ssid>"
-WIRELESS_PASSWORD="<your wireless password>"
+WIRELESS_SSID="<optional wireless ssid>"
+WIRELESS_PASSWORD="<optional wireless password>"
 INITIAL_DISK_PASSWORD="<your intial disk encryption password>"
 ```
 
@@ -42,7 +42,8 @@ Run the following command
 ```
 ./build.sh
 ```
-This will generate an iso image that needs to be 
+After the iso is build, this will start `usb-creator-gtk` 
+which can be used to "burn" this image onto a flash drive.
 
 # TODO
 
