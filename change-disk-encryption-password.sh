@@ -30,4 +30,4 @@ echo -n "$password_new" | cryptsetup luksChangeKey -S 0 -d $old_key_file $root -
 echo -n "$password_new" | cryptsetup luksChangeKey --pbkdf-force-iterations 500000 -S 0 -d $old_key_file $boot -
 rm $old_key_file
 
-echo "Successfully update your disk encryption password. Do not forget to update it in your password manager!"
+echo "Your disk encryption password was successfully updated. Do not forget to update it in your password manager!"

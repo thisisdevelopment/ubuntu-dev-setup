@@ -50,6 +50,7 @@ This will generate an iso image that needs to be
 - make sure unpack-iso is removed when a new iso is downloaded
 - progress indication for post-user-install
 - preseed timezone/keyboard etc in user-install
+- skip wireless in user-install
 - force user to set new password for disk-encryption
 - chrome settings for pipewire to enable video conferencing on ubuntu >= 22.04
 - add vscode to default install

@@ -4,9 +4,11 @@ set -ux
 
 {
 
-dev=$(ls /sys/class/ieee80211/*/device/net/ | head -n 1)
-sudo ip link set dev $dev up
-sudo nmcli d wifi connect "$WIRELESS_SSID" password "$WIRELESS_PASSWORD"
+if [ -n "${WIRELESS_SSID}" -a -n "${WIRELESS_PASSWORD}" ]; then
+    dev=$(ls /sys/class/ieee80211/*/device/net/ | head -n 1)
+    sudo ip link set dev $dev up
+    sudo nmcli d wifi connect "$WIRELESS_SSID" password "$WIRELESS_PASSWORD"
+fi
 
 user=$(tail -n 1 /etc/passwd | cut -f1 -d':')
 
