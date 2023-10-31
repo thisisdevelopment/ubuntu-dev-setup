@@ -10,6 +10,8 @@ if [ -n "${WIRELESS_SSID}" -a -n "${WIRELESS_PASSWORD}" ]; then
     sudo nmcli d wifi connect "$WIRELESS_SSID" password "$WIRELESS_PASSWORD"
 fi
 
+snap refresh
+
 user=$(tail -n 1 /etc/passwd | cut -f1 -d':')
 
 usermod -aG docker $user

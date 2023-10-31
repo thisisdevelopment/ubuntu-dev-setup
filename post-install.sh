@@ -8,7 +8,7 @@ dpkg -i ./google-chrome-stable_current_amd64.deb
 rm ./google-chrome-stable_current_amd64.deb
 
 apt-get update
-apt-get install -y libfuse2 docker.io docker-compose openvpn ssh-askpass git curl diffstat diffutils flameshot jq net-tools whois mtr ripgrep inkscape gzip findutils htop rsync joe cryptsetup-initramfs kazam
+apt-get install -y libfuse2 docker.io docker-compose openvpn ssh-askpass git curl diffstat diffutils flameshot jq net-tools whois mtr ripgrep inkscape gzip findutils htop rsync joe cryptsetup-initramfs kazam linux-modules-ivsc-generic-hwe-22.04 linux-modules-ipu6-generic-hwe-22.04
 
 # Cleanup
 rm /root/post-install.sh
